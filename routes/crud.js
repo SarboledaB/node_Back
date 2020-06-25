@@ -17,16 +17,11 @@ router.get('/Listar', async (req, res) => {
 });
 
 router.post('/crearNuevo', async (req,res) =>{
-    console.log("se llamo")
     const producto = new productos(req.body)
-    console.log(producto);
-
     try {
         const guardar = await producto.save();
         res.json(guardar);
-        console.log("se guardo");
     } catch (err) {
-        console.log({message: err})
         res.json({ message: err });
     }
 });
@@ -41,9 +36,15 @@ router.delete('/:productoId', async(req, res) => {
     }
 });
 
-router.patch('/:productId', (req, res)=> {
+router.patch('/:productoId', async (req, res)=> {
     try {
-        const actualizarProducto = productos.update({_id: req.params.postId }, {$set: req.body});
+        const actualizarProducto = await productos.updateOne({_id: req.params.productoId }, {
+            $set: {
+                nombre: req.body.nombre,
+                descripcion: req.body.descripcion,
+                precio: req.body.precio
+            }
+        });
         res.json(actualizarProducto);
     } catch (error) {
         res.json({message: err});
