@@ -1,9 +1,12 @@
+//Uso de express
 const express = require('express');
 const router = express.Router();
+//Schema
 const productos = require('../models/crud');
+//Uso de CORS
 const cors =       require('cors');
 
-
+//Permite listar todos los productos de la base de datos
 router.get('/Listar', async (req, res) => {
     try {
 
@@ -16,6 +19,7 @@ router.get('/Listar', async (req, res) => {
     }
 });
 
+//Permite crear un nuevo producto en la base de datos
 router.post('/crearNuevo', async (req,res) =>{
     const producto = new productos(req.body)
     try {
@@ -26,6 +30,7 @@ router.post('/crearNuevo', async (req,res) =>{
     }
 });
 
+//Permite borrar un producto existente en la base de datos
 router.delete('/:productoId', async(req, res) => {
     try {
         const borrarProducto = await productos.remove({_id: req.params.productoId});
@@ -36,6 +41,7 @@ router.delete('/:productoId', async(req, res) => {
     }
 });
 
+//Permite editar un producto existente en la base de datos
 router.patch('/:productoId', async (req, res)=> {
     try {
         const actualizarProducto = await productos.updateOne({_id: req.params.productoId }, {
